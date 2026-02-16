@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vecmocon Quotation Generator</title>
+
+<!-- Favicon Package - Professional multi-size support -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#2E7D32">
+
+<style>
+/* ══════════════════════════════════════════════════════════════════════════════
+   RESET & BASE STYLES
+   ══════════════════════════════════════════════════════════════════════════════ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    color: #222;
+    line-height: 1.6;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   LAYOUT STRUCTURE
+   ══════════════════════════════════════════════════════════════════════════════ */
+.app {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+}
+
+.topbar {
+    background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+    color: #fff;
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.topbar img {
+    height: 36px;
+    filter: brightness(0) invert(1);
+}
+
+.topbar h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.topbar span {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 480px 1fr;
+    height: calc(100vh - 64px);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   FORM PANEL
+   ══════════════════════════════════════════════════════════════════════════════ */
+.form-panel {
+    background: #fff;
+    overflow-y: auto;
+    border-right: 1px solid #ddd;
+    padding: 0;
+}
+
+.section {
+    border-bottom: 1px solid #eee;
+    padding: 20px 24px;
+}
+
+.section-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #1B5E20;
+    letter-spacing: 0.8px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, #2E7D32, transparent);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   FORM ELEMENTS
+   ══════════════════════════════════════════════════════════════════════════════ */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.form-row.full {
+    grid-template-columns: 1fr;
+}
+
+.fg {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #555;
+    letter-spacing: 0.3px;
+}
+
+input,
+textarea,
+select {
+    border: 1.5px solid #ddd;
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-size: 0.85rem;
+    width: 100%;
+    transition: all 0.2s ease;
+    background: #fafafa;
+    font-family: inherit;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #2E7D32;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 70px;
+    line-height: 1.5;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PRODUCT CARDS
+   ══════════════════════════════════════════════════════════════════════════════ */
+.product-card {
+    background: linear-gradient(135deg, #f9fdf9 0%, #e8f5e9 100%);
+    border: 1px solid #c8e6c9;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.product-card-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #2E7D32;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.remove-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #ffebee;
+    border: none;
+    color: #c62828;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.remove-btn:hover {
+    background: #c62828;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.add-btn {
+    width: 100%;
+    padding: 10px;
+    border: 1.5px dashed #4CAF50;
+    background: none;
+    color: #2E7D32;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.add-btn:hover {
+    background: #f1f8e9;
+    border-color: #2E7D32;
+    transform: translateY(-1px);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   TERMS GROUP CARDS
+   ══════════════════════════════════════════════════════════════════════════════ */
+.terms-card {
+    background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+    border: 1px solid #ffe082;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.terms-card-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #e65100;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.terms-add-btn {
+    width: 100%;
+    padding: 10px;
+    border: 1.5px dashed #FFA726;
+    background: none;
+    color: #e65100;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.terms-add-btn:hover {
+    background: #fff3e0;
+    border-color: #e65100;
+    transform: translateY(-1px);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   EXCLUSIONS MINI-TABLE
+   ══════════════════════════════════════════════════════════════════════════════ */
+.excl-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.excl-row input {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.excl-row select {
+    width: 160px;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    background: white;
+}
+
+.excl-remove {
+    background: #ffebee;
+    border: none;
+    color: #c62828;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.excl-remove:hover {
+    background: #c62828;
+    color: #fff;
+}
+
+.excl-add {
+    background: none;
+    border: 1px dashed #aaa;
+    border-radius: 5px;
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    color: #555;
+    margin-top: 6px;
+    transition: all 0.2s ease;
+}
+
+.excl-add:hover {
+    background: #f5f5f5;
+    border-color: #666;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PREVIEW PANEL
+   ══════════════════════════════════════════════════════════════════════════════ */
+.preview-panel {
+    background: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    overflow-y: auto;
+    gap: 16px;
+}
+
+.preview-panel h3 {
+    font-size: 0.9rem;
+    color: #555;
+    align-self: flex-start;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.pdf-frame {
+    width: 100%;
+    max-width: 700px;
+    height: 900px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    background: #fff;
+}
+
+.no-preview {
+    background: #fff;
+    border-radius: 12px;
+    padding: 80px 40px;
+    text-align: center;
+    color: #999;
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.no-preview .icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.no-preview p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   ACTION BAR
+   ══════════════════════════════════════════════════════════════════════════════ */
+.action-bar {
+    padding: 18px 24px;
+    background: #fff;
+    border-top: 2px solid #e0e0e0;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.btn-gen {
+    background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 28px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(27, 94, 32, 0.3);
+    font-family: inherit;
+}
+
+.btn-gen:hover {
+    background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(27, 94, 32, 0.4);
+}
+
+.btn-gen:active {
+    transform: translateY(0);
+}
+
+.btn-gen.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.btn-sample {
+    background: #fff;
+    color: #1B5E20;
+    border: 2px solid #1B5E20;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.btn-sample:hover {
+    background: #f1f8e9;
+    transform: translateY(-2px);
+}
+
+.status {
+    font-size: 0.8rem;
+    padding: 10px 16px;
+    border-radius: 6px;
+    display: none;
+    font-weight: 500;
+}
+
+.status.ok {
+    background: #e8f5e9;
+    color: #2E7D32;
+    border: 1px solid #c8e6c9;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status.err {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status.loading {
+    background: #e3f2fd;
+    color: #1565c0;
+    border: 1px solid #bbdefb;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN
+   ══════════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+    .main {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    
+    .preview-panel {
+        min-height: 500px;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SCROLLBAR STYLING
+   ══════════════════════════════════════════════════════════════════════════════ */
+.form-panel::-webkit-scrollbar,
+.preview-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.form-panel::-webkit-scrollbar-track,
+.preview-panel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.form-panel::-webkit-scrollbar-thumb,
+.preview-panel::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.form-panel::-webkit-scrollbar-thumb:hover,
+.preview-panel::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+</style>
+</head>
+<body>
+<div class="app">
+  
+  <!-- ══════════════════════════════════════════════════════════════════════════════
+       TOP BAR
+       ══════════════════════════════════════════════════════════════════════════════ -->
+  <div class="topbar" style="display:flex;justify-content:space-between;align-items:center;">
+    <!-- Left: Title -->
+    <div style="display:flex;align-items:center;">
+      <h1 style="margin:0;">Vecmocon Quotation Generator</h1>
+    </div>
+    
+    <!-- Center: Developer Credits -->
+    <span style="font-size:0.8rem;color:#c8e6c9;position:absolute;left:50%;transform:translateX(-50%);">
+      Developed by: <strong>B T Shashank</strong> | South Squad Sales Team
+    </span>
+    
+    <!-- Right: Backend Status -->
+    <span>Backend: <span id="serverStatus" style="color:#a5d6a7">checking…</span></span>
+  </div>
+
+  <div class="main">
+    
+    <!-- ══════════════════════════════════════════════════════════════════════════════
+         FORM PANEL
+         ══════════════════════════════════════════════════════════════════════════════ -->
+    <div class="form-panel">
+
+      <!-- ─────────────────────────────────────────────────────────────────────────
+           LOGO SECTION
+           ───────────────────────────────────────────────────────────────────────── -->
+      <div style="text-align:center;padding:30px 24px;background:#fff;border-bottom:1px solid #eee;">
+        <img src="/vecmocon_logo.png" 
+             alt="Vecmocon Technologies" 
+             style="height:60px;max-width:90%;object-fit:contain;"
+             onerror="this.style.display='none';">
+      </div>
+
+      <!-- ─────────────────────────────────────────────────────────────────────────
+           QUOTATION DETAILS
+           ───────────────────────────────────────────────────────────────────────── -->
+      <div class="section">
+        <div class="section-title">Quotation Details</div>
+        
+        <!-- Quotation Type Selector -->
+        <div class="form-row">
+          <div class="fg">
+            <label>Quotation Type</label>
+            <select id="qType" onchange="updateQuotationLabel()" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:0.9rem;">
+              <option value="sample">Sample Quotation</option>
+              <option value="series">Series Quotation</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label id="qNumLabel">Quotation No</label>
+            <input id="qNum" value="" placeholder="e.g., 2026_SH_169_V0">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="fg">
+            <label>Date</label>
+            <input id="qDate" type="date" value="" placeholder="Select date">
+          </div>
+          <div class="fg">
+            <!-- Empty space for alignment -->
+          </div>
+        </div>
+        
+        <!-- Datasheets Section -->
+        <div class="fg" style="grid-column:1/-1;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <label style="margin:0;font-weight:600;">Datasheets (optional)</label>
+            <button type="button" onclick="addDatasheet()" style="background:#4CAF50;color:white;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-size:0.9rem;">
+              ➕ Add Datasheet
+            </button>
+          </div>
+          <div id="datasheetContainer" style="display:flex;flex-direction:column;gap:12px;">
+            <!-- Datasheet entries will be added here dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ─────────────────────────────────────────────────────────────────────────
+           CLIENT INFORMATION
+           ───────────────────────────────────────────────────────────────────────── -->
+      <div class="section">
+        <div class="section-title">Client Information</div>
+        <div class="fg">
+          <label>Company Name</label>
+          <input id="cCompany" value="" placeholder="Client Company Name">
+        </div>
+        <div class="fg">
+          <label>Location</label>
+          <input id="cLocation" value="" placeholder="City, State">
+        </div>
+        <div class="form-row">
+          <div class="fg">
+            <label>Contact Name</label>
+            <input id="cName" value="" placeholder="Mr./Ms. Name">
+          </div>
+          <div class="fg">
+            <label>Designation</label>
+            <input id="cDesig" value="" placeholder="Job Title">
+          </div>
+        </div>
+      </div>
+
+      <!-- ─────────────────────────────────────────────────────────────────────────
+           PRODUCTS
+           ───────────────────────────────────────────────────────────────────────── -->
+      <div class="section">
+        <div class="section-title">Products</div>
+        <div id="productsContainer"></div>
+        <button class="add-btn" onclick="addProduct()">+ Add Product Row</button>
+        
+        <!-- Notes/Remarks Section -->
+        <div class="fg" style="margin-top: 20px;">
+          <label style="font-weight: 600; margin-bottom: 8px; display: block;">
+            Notes / Remarks (Optional)
+            <span style="font-weight: 400; font-size: 0.85em; color: #666;">
+              - Appears below products table in PDF
+            </span>
+          </label>
+          <textarea 
+            id="productNotes" 
+            placeholder="e.g., The products are considered with standard IVEC protocol. Any major changes or customization might involve development cost. Which will be discussed and agreed upon separately."
+            style="width: 100%; min-height: 80px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; font-size: 0.9rem; resize: vertical;"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- ─────────────────────────────────────────────────────────────────────────
+           TERMS & CONDITIONS GROUPS
+           ───────────────────────────────────────────────────────────────────────── -->
+      <div class="section">
+        <div class="section-title">Terms &amp; Conditions Groups</div>
+        <div id="termsContainer"></div>
+        <button class="terms-add-btn" onclick="addTermsGroup()">
+          + Add Terms Section (A / B / C…)
+        </button>
+      </div>
+
+      <!-- ─────────────────────────────────────────────────────────────────────────
+           SIGNATORIES
+           ───────────────────────────────────────────────────────────────────────── -->
+      <div class="section">
+        <div class="section-title">Signatories</div>
+        <div id="signatories">
+          <div class="form-row">
+            <div class="fg">
+              <label>Name 1</label>
+              <input class="sName" value="" placeholder="First Signatory">
+            </div>
+            <div class="fg">
+              <label>Designation 1</label>
+              <input class="sDesig" value="" placeholder="Job Title">
+            </div>
+          </div>
+          <div class="fg">
+            <label>Date 1</label>
+            <input class="sDate" type="date" value="" style="width:180px">
+          </div>
+          <div class="form-row" style="margin-top:12px">
+            <div class="fg">
+              <label>Name 2</label>
+              <input class="sName" value="" placeholder="Second Signatory">
+            </div>
+            <div class="fg">
+              <label>Designation 2</label>
+              <input class="sDesig" value="" placeholder="Job Title">
+            </div>
+          </div>
+          <div class="fg">
+            <label>Date 2</label>
+            <input class="sDate" type="date" value="" style="width:180px">
+          </div>
+        </div>
+      </div>
+
+      <!-- ─────────────────────────────────────────────────────────────────────────
+           FLOATING ACTION BUTTONS
+           ───────────────────────────────────────────────────────────────────────── -->
+      <div style="position:fixed;bottom:24px;left:24px;z-index:1000;max-width:420px;">
+        <div class="status" id="statusMsg"></div>
+      </div>
+
+      <div style="position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:10px;z-index:1000;">
+        <button onclick="toggleHelp()" style="background:#2196F3;color:white;padding:10px 18px;border:none;border-radius:25px;font-weight:600;cursor:pointer;box-shadow:0 3px 8px rgba(33,150,243,0.3);transition:all 0.3s;display:flex;align-items:center;gap:6px;font-size:0.85rem;white-space:nowrap;">
+          ❓ How to Use
+        </button>
+        <button class="btn-sample" onclick="loadSample()" style="padding:10px 18px;border-radius:25px;box-shadow:0 3px 8px rgba(76,175,80,0.3);display:flex;align-items:center;gap:6px;font-size:0.85rem;white-space:nowrap;">
+          📋 Load Sample
+        </button>
+        <button class="btn-gen" id="genBtn" onclick="generatePDF()" style="padding:10px 18px;border-radius:25px;box-shadow:0 3px 8px rgba(46,125,50,0.4);display:flex;align-items:center;gap:6px;font-size:0.85rem;white-space:nowrap;">
+          <span>⬇</span> Generate PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- Help Panel Modal (Hidden by default) -->
+    <div id="helpPanel" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000;padding:40px;" onclick="if(event.target===this) toggleHelp();">
+      <div style="background:white;border-radius:12px;padding:30px;max-width:800px;margin:0 auto;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.3);position:relative;" onclick="event.stopPropagation();">
+        
+        <!-- Close Button -->
+        <button onclick="toggleHelp()" style="position:absolute;top:15px;right:15px;background:#f5f5f5;border:none;border-radius:50%;width:36px;height:36px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#666;transition:all 0.2s;z-index:1;" onmouseover="this.style.background='#e0e0e0';this.style.color='#333'" onmouseout="this.style.background='#f5f5f5';this.style.color='#666'">
+          ✕
+        </button>
+
+        <h3 style="margin:0 0 20px 0;color:#1976D2;font-size:1.3rem;border-bottom:2px solid #2196F3;padding-bottom:10px;padding-right:40px;">📖 How to Use This Quotation Generator</h3>
+        
+        <div style="line-height:1.8;color:#333;">
+          <p style="margin:0 0 15px 0;"><strong style="color:#2196F3;">Step 1:</strong> Click <strong>"📋 Load Sample"</strong> to auto-fill Terms & Conditions.</p>
+          
+          <p style="margin:0 0 10px 0;"><strong style="color:#2196F3;">Step 2:</strong> Fill in the required information:</p>
+          <ul style="margin:5px 0 15px 25px;">
+            <li><strong>Quotation Details:</strong> Enter Quotation number, Date, and Optional datasheet link</li>
+            <li><strong>Client Information:</strong> Company name, Location, and Contact Details</li>
+            <li><strong>Products:</strong> Click "➕ Add Product" to add items with Name, Quantity, and Price</li>
+            <li><strong>Signatories:</strong> Fill in your details for Signatory 1</li>
+          </ul>
+          
+          <p style="margin:0 0 10px 0;"><strong style="color:#2196F3;">Step 3:</strong> Review the <strong>Terms & Conditions</strong> sections (auto-loaded). You can:</p>
+          <ul style="margin:5px 0 15px 25px;">
+            <li>Add more terms groups with "➕ Add Terms Group"</li>
+            <li>Add exclusion items for each product</li>
+            <li>Toggle "Supporting connectors and cables are included" checkbox</li>
+          </ul>
+          
+          <p style="margin:0 0 15px 0;"><strong style="color:#2196F3;">Step 4:</strong> Click <strong>"⬇ Generate PDF"</strong> (bottom right) to create your quotation.</p>
+          
+          <div style="background:#e3f2fd;border-left:4px solid #2196F3;padding:15px;border-radius:4px;margin-top:20px;">
+            <p style="margin:0 0 8px 0;"><strong>💡 Tips:</strong></p>
+            <ul style="margin:0 0 0 20px;padding:0;">
+              <li>Use calendar icons (📅) for date selection</li>
+              <li>Use dropdowns for exclusion status (Included/Not Included)</li>
+              <li>Floating buttons (bottom right) are always accessible</li>
+              <li>Status messages appear at bottom left after PDF generation</li>
+            </ul>
+          </div>
+
+          <div style="background:linear-gradient(135deg,#f5f5f5,#e8f5e9);border:2px solid #4a7c59;border-radius:8px;padding:15px;margin-top:25px;text-align:center;">
+            <p style="margin:0 0 8px 0;font-size:1rem;">
+              <strong style="color:#2e7d32;">Vibe coded by B T Shashank</strong> 😁
+            </p>
+            <p style="margin:0;font-size:0.9rem;color:#555;">
+              Write me at: <a href="mailto:bt.shashank@vecmocon.com" style="color:#2196F3;text-decoration:none;font-weight:600;">bt.shashank@vecmocon.com</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════════
+         PREVIEW PANEL
+         ══════════════════════════════════════════════════════════════════════════════ -->
+    <div class="preview-panel">
+      <h3>PDF Preview</h3>
+      <div class="no-preview" id="noPreview">
+        <div class="icon">📄</div>
+        <p>Fill in the form and click <b>Generate PDF</b><br>to see your quotation here.</p>
+      </div>
+      <iframe id="pdfFrame" class="pdf-frame" style="display:none"></iframe>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ══════════════════════════════════════════════════════════════════════════════ -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const API = "http://localhost:5000";
+let productCount = 0;
+let termsCount = 0;
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SERVER CHECK
+// ══════════════════════════════════════════════════════════════════════════════
+async function checkServer() {
+  try {
+    const resp = await fetch(API + "/");
+    if (resp.ok) {
+      document.getElementById("serverStatus").textContent = "running ✓";
+      document.getElementById("serverStatus").style.color = "#a5d6a7";
+      return true;
+    }
+  } catch (e) {
+    document.getElementById("serverStatus").textContent = "offline ✗";
+    document.getElementById("serverStatus").style.color = "#ffab91";
+  }
+  return false;
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// DATASHEET MANAGEMENT
+// ══════════════════════════════════════════════════════════════════════════════
+let datasheetCounter = 0;
+
+// ══════════════════════════════════════════════════════════════════════════════
+// QUOTATION TYPE HANDLING
+// ══════════════════════════════════════════════════════════════════════════════
+
+function updateQuotationLabel() {
+  const qType = document.getElementById("qType").value;
+  const label = document.getElementById("qNumLabel");
+  const input = document.getElementById("qNum");
+  
+  if (qType === "sample") {
+    label.textContent = "Quotation No";
+    input.placeholder = "e.g., 2026_SH_169_V0";
+  } else if (qType === "series") {
+    label.textContent = "Series Quotation No";
+    input.placeholder = "e.g., Q-2026-001";
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// DATASHEETS HANDLING
+// ══════════════════════════════════════════════════════════════════════════════
+
+function addDatasheet(product = "", url = "") {
+  datasheetCounter++;
+  const container = document.getElementById("datasheetContainer");
+  const row = document.createElement("div");
+  row.className = "datasheet-row";
+  row.id = `datasheet-${datasheetCounter}`;
+  row.style.cssText = "display:grid;grid-template-columns:200px 1fr 40px;gap:8px;align-items:center;padding:12px;background:#f9f9f9;border-radius:6px;";
+  
+  row.innerHTML = `
+    <select class="datasheet-product" style="padding:8px;border:1px solid #ddd;border-radius:4px;">
+      <option value="">Select Product</option>
+      <option value="VIM" ${product === "VIM" ? "selected" : ""}>VIM</option>
+      <option value="Charger" ${product === "Charger" ? "selected" : ""}>Charger</option>
+      <option value="Emulator" ${product === "Emulator" ? "selected" : ""}>Emulator</option>
+      <option value="SoC Meter" ${product === "SoC Meter" ? "selected" : ""}>SoC Meter</option>
+      <option value="BMS" ${product === "BMS" ? "selected" : ""}>BMS</option>
+      <option value="Daughter Board" ${product === "Daughter Board" ? "selected" : ""}>Daughter Board</option>
+    </select>
+    <input type="url" class="datasheet-url" value="${url}" placeholder="https://drive.google.com/..." 
+           style="padding:8px;border:1px solid #ddd;border-radius:4px;">
+    <button type="button" onclick="removeDatasheet('datasheet-${datasheetCounter}')" 
+            style="background:#f44336;color:white;border:none;width:36px;height:36px;border-radius:4px;cursor:pointer;font-size:1.2rem;">
+      ✕
+    </button>
+  `;
+  
+  container.appendChild(row);
+}
+
+function removeDatasheet(id) {
+  document.getElementById(id)?.remove();
+}
+
+function collectDatasheets() {
+  const datasheets = [];
+  document.querySelectorAll(".datasheet-row").forEach(row => {
+    const product = row.querySelector(".datasheet-product").value;
+    const url = row.querySelector(".datasheet-url").value.trim();
+    if (product && url) {
+      datasheets.push({ product, url });
+    }
+  });
+  return datasheets;
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// PRODUCT MANAGEMENT
+// ══════════════════════════════════════════════════════════════════════════════
+function addProduct(code="", name="", qty=1, price=0) {
+  const id = productCount++;
+  const div = document.createElement("div");
+  div.className = "product-card";
+  div.setAttribute("data-id", id);
+  div.innerHTML = `
+    <div class="product-card-title">Product #${id + 1}</div>
+    <button class="remove-btn" onclick="removeProduct(${id})">×</button>
+    <div class="fg">
+      <label>Company Product Code</label>
+      <input class="pCode" value="${code}" placeholder="e.g., Charger, BMS, VIM">
+    </div>
+    <div class="fg">
+      <label>Product Name / Description</label>
+      <input class="pName" value="${name}" placeholder="Product description">
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label>Quantity</label>
+        <input type="number" class="pQty" value="${qty}" min="1">
+      </div>
+      <div class="fg">
+        <label>Unit Price (INR)</label>
+        <input type="number" class="pPrice" value="${price}" min="0" step="100">
+      </div>
+    </div>
+  `;
+  document.getElementById("productsContainer").appendChild(div);
+}
+
+function removeProduct(id) {
+  const card = document.querySelector(`.product-card[data-id="${id}"]`);
+  if (card) card.remove();
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// TERMS GROUP MANAGEMENT
+// ══════════════════════════════════════════════════════════════════════════════
+function addTermsGroup(data={}) {
+  const id = termsCount++;
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const letter = letters[id] || "?";
+  
+  const div = document.createElement("div");
+  div.className = "terms-card";
+  div.setAttribute("data-id", id);
+  div.innerHTML = `
+    <div class="terms-card-title">Section ${letter}</div>
+    <button class="remove-btn" onclick="removeTermsGroup(${id})">×</button>
+    
+    <div class="fg">
+      <label>Section Label</label>
+      <input class="tLabel" value="${data.label||''}" placeholder="e.g., General Terms for VIM">
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label>Product Name</label>
+        <input class="tProdName" value="${data.product_name||''}" placeholder="e.g., VIM">
+      </div>
+      <div class="fg">
+        <label>HSN Code</label>
+        <input class="tHsn" value="${data.hsn_code||''}" placeholder="e.g., 90328990">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label>GST Rate</label>
+        <input class="tGst" value="${data.gst_rate||''}" placeholder="e.g., 18%">
+      </div>
+      <div class="fg">
+        <label>Delivery</label>
+        <input class="tDelivery" value="${data.delivery||''}" placeholder="e.g., Ex-Works, Delhi">
+      </div>
+    </div>
+    <div class="fg">
+      <label>Lead Time</label>
+      <input class="tLead" value="${data.lead_time||''}" placeholder="e.g., 45 days from PO date">
+    </div>
+    <div class="fg">
+      <label>Payment Terms</label>
+      <input class="tPayment" value="${data.payment_terms||''}" placeholder="e.g., 100% advance">
+    </div>
+    <div class="fg">
+      <label>Offer Validity</label>
+      <input class="tValidity" value="${data.offer_validity||''}" placeholder="e.g., 30 calendar days">
+    </div>
+    <div class="fg">
+      <label>Warranty</label>
+      <input class="tWarranty" value="${data.warranty||''}" placeholder="e.g., 24 months">
+    </div>
+    <div class="fg">
+      <label>Service</label>
+      <textarea class="tService" placeholder="Service details...">${data.service||''}</textarea>
+    </div>
+    <div class="fg">
+      <label>Customizations Note</label>
+      <textarea class="tCustom" placeholder="Customization policy...">${data.customizations||''}</textarea>
+    </div>
+    <div class="fg" style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="this.querySelector('input').click()">
+      <input type="checkbox" class="tConnectors" ${data.connectors_included?'checked':''} style="cursor:pointer;margin:0;" onclick="event.stopPropagation();">
+      <span style="font-weight:500;user-select:none;">Supporting connectors and cables are included</span>
+    </div>
+    
+    <div class="fg">
+      <label style="font-weight:600;margin-bottom:8px;display:block;">Exclusions (optional)</label>
+      <div class="excl-container" data-group="${id}">
+        ${renderExclusions(data.exclusions||{})}
+      </div>
+      <button class="excl-add" onclick="addExclusion(${id})">+ Add Exclusion Item</button>
+    </div>
+  `;
+  document.getElementById("termsContainer").appendChild(div);
+}
+
+function removeTermsGroup(id) {
+  const card = document.querySelector(`.terms-card[data-id="${id}"]`);
+  if (card) card.remove();
+}
+
+function renderExclusions(excl) {
+  let html = '';
+  for (const [k, v] of Object.entries(excl)) {
+    html += `
+      <div class="excl-row">
+        <input class="excl-key" value="${k}" placeholder="Item name" style="flex:1;">
+        <select class="excl-val" style="width:160px;">
+          <option value="Included" ${v==='Included'?'selected':''}>Included</option>
+          <option value="Not Included" ${v==='Not Included'?'selected':''}>Not Included</option>
+        </select>
+        <button class="excl-remove" onclick="this.parentElement.remove()">✕</button>
+      </div>
+    `;
+  }
+  return html;
+}
+
+function addExclusion(groupId) {
+  const container = document.querySelector(`.excl-container[data-group="${groupId}"]`);
+  const div = document.createElement("div");
+  div.className = "excl-row";
+  div.innerHTML = `
+    <input class="excl-key" placeholder="Item name" style="flex:1;">
+    <select class="excl-val" style="width:160px;">
+      <option value="Included">Included</option>
+      <option value="Not Included">Not Included</option>
+    </select>
+    <button class="excl-remove" onclick="this.parentElement.remove()">✕</button>
+  `;
+  container.appendChild(div);
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// DATA COLLECTION
+// ══════════════════════════════════════════════════════════════════════════════
+
+// Format date from YYYY-MM-DD to readable format (e.g., "06 Nov 2025")
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  const date = new Date(dateStr);
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  return `${day} ${month} ${year}`;
+}
+
+function collectData() {
+  // Products
+  const products = [];
+  document.querySelectorAll(".product-card").forEach(card => {
+    products.push({
+      code: card.querySelector(".pCode").value,
+      name: card.querySelector(".pName").value,
+      quantity: parseInt(card.querySelector(".pQty").value) || 1,
+      unitPrice: parseFloat(card.querySelector(".pPrice").value) || 0,
+    });
+  });
+
+  // Terms groups
+  const termsGroups = [];
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  document.querySelectorAll(".terms-card").forEach((card, i) => {
+    const exclusions = {};
+    card.querySelectorAll(".excl-row").forEach(row => {
+      const k = row.querySelector(".excl-key").value.trim();
+      const v = row.querySelector(".excl-val").value.trim();
+      if (k) exclusions[k] = v;
+    });
+    
+    termsGroups.push({
+      section_letter: letters[i],
+      label: card.querySelector(".tLabel").value,
+      product_name: card.querySelector(".tProdName").value,
+      hsn_code: card.querySelector(".tHsn").value,
+      gst_rate: card.querySelector(".tGst").value,
+      delivery: card.querySelector(".tDelivery").value,
+      lead_time: card.querySelector(".tLead").value,
+      payment_terms: card.querySelector(".tPayment").value,
+      offer_validity: card.querySelector(".tValidity").value,
+      warranty: card.querySelector(".tWarranty").value,
+      service: card.querySelector(".tService").value,
+      customizations: card.querySelector(".tCustom").value,
+      connectors_included: card.querySelector(".tConnectors").checked,
+      exclusions: Object.keys(exclusions).length ? exclusions : undefined,
+    });
+  });
+
+  // Signatories
+  const sNames = [...document.querySelectorAll(".sName")].map(e => e.value);
+  const sDesigs = [...document.querySelectorAll(".sDesig")].map(e => e.value);
+  const sDates = [...document.querySelectorAll(".sDate")].map(e => formatDate(e.value));
+  const signatories = sNames.map((n, i) => ({
+    name: n,
+    designation: sDesigs[i],
+    date: sDates[i]
+  }));
+
+  return {
+    company: {
+      name: "Vecmocon Technologies Private Limited",
+      address: {
+        company_name: "Vecmocon Technologies Pvt Ltd",
+        line1: "4th Floor, Stellar Okas,",
+        line2: "1423, Sector 142, Noida, Uttar",
+        line3: "Pradesh 201305",
+        gstin: "GSTIN: 09AAFCV5587K1ZJ",
+      },
+      intro: "Vecmocon Technologies is a full-stack, deep-tech company, developing safety-critical electronic and software platforms for electric vehicles. Its offerings include Research Design, development as well as manufacturing of EV allied components (Battery Management Systems, Charger, Vehicle Intelligence Module, Combined Compute Units Motor Control Units, Vehicle Control Units, Power Distribution units, etc.) and software solutions (Connectivity Solutions like FOTA. Telemetry, etc);",
+      markets: "Vecmocon's solutions are being enabled in a number of vehicles, including two-wheelers, three-wheelers, and light commercial vehicles. The offering also includes solutions for high-voltage vehicles, passenger cars, fleet operators, financial institutions, electric buses, electric trucks, and energy storage systems in both Indian and international markets.",
+      compliance: "Our products are fully compliant under FAME-II guidelines by ICAT/ARAI.",
+    },
+    quotation: {
+      type: document.getElementById("qType").value,
+      number: document.getElementById("qNum").value,
+      date: formatDate(document.getElementById("qDate").value)
+    },
+    client: {
+      company: document.getElementById("cCompany").value,
+      location: document.getElementById("cLocation").value,
+      contact: {
+        name: document.getElementById("cName").value,
+        designation: document.getElementById("cDesig").value
+      }
+    },
+    datasheets: collectDatasheets(),
+    products,
+    product_notes: document.getElementById("productNotes").value.trim() || undefined,
+    terms_groups: termsGroups,
+    signatories,
+  };
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// PDF GENERATION
+// ══════════════════════════════════════════════════════════════════════════════
+async function generatePDF() {
+  const btn = document.getElementById("genBtn");
+  const status = document.getElementById("statusMsg");
+
+  const online = await checkServer();
+  if (!online) {
+    showStatus("err", "❌ Cannot reach backend. Make sure app.py is running on port 5000.");
+    return;
+  }
+
+  btn.classList.add("loading");
+  btn.innerHTML = "<span>⏳</span> Generating…";
+  showStatus("loading", "⏳ Generating PDF…");
+
+  try {
+    const data = collectData();
+    const resp = await fetch(API + "/api/generate", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(data),
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({error: resp.statusText}));
+      throw new Error(err.error || resp.statusText);
+    }
+
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+
+    // Show in iframe
+    document.getElementById("noPreview").style.display = "none";
+    const frame = document.getElementById("pdfFrame");
+    frame.src = url;
+    frame.style.display = "block";
+
+    // Also trigger download
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `Quotation_${data.quotation.number.replace(/\//g, '_')}.pdf`;
+    a.click();
+
+    showStatus("ok", "✅ PDF generated and downloaded!");
+  } catch (e) {
+    showStatus("err", "❌ " + e.message);
+  } finally {
+    btn.classList.remove("loading");
+    btn.innerHTML = "<span>⬇</span> Generate PDF";
+  }
+}
+
+function toggleHelp() {
+  const panel = document.getElementById("helpPanel");
+  if (panel.style.display === "none") {
+    panel.style.display = "block";
+    panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  } else {
+    panel.style.display = "none";
+  }
+}
+
+function showStatus(type, msg) {
+  const el = document.getElementById("statusMsg");
+  el.className = "status " + type;
+  el.textContent = msg;
+  
+  // Auto-dismiss success messages after 5 seconds
+  if (type === "ok") {
+    setTimeout(() => {
+      // Only clear if the message hasn't changed
+      if (el.textContent === msg) {
+        el.className = "status";
+        el.textContent = "";
+      }
+    }, 5000); // 5 seconds
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// LOAD SAMPLE DATA
+// ══════════════════════════════════════════════════════════════════════════════
+async function loadSample() {
+  try {
+    const resp = await fetch(API + "/api/sample");
+    if (!resp.ok) throw new Error();
+    const d = await resp.json();
+    fillForm(d);
+    showStatus("ok", "✅ Sample data loaded!");
+  } catch {
+    showStatus("err", "❌ Could not load sample — is app.py running?");
+  }
+}
+
+function fillForm(d) {
+  // Load Terms & Conditions and ONLY Signatory 2 from sample data
+  // Other fields remain empty for user to fill
+  
+  // Load Terms & Conditions
+  document.getElementById("termsContainer").innerHTML = "";
+  termsCount = 0;
+  (d.terms_groups || []).forEach(g => addTermsGroup(g));
+  
+  // Load ONLY Signatory 2 (second signatory)
+  const sNames = document.querySelectorAll(".sName");
+  const sDesigs = document.querySelectorAll(".sDesig");
+  const sDates = document.querySelectorAll(".sDate");
+  
+  // Only fill index 1 (Signatory 2), skip index 0 (Signatory 1)
+  if (d.signatories && d.signatories[1]) {
+    const s = d.signatories[1];
+    if (sNames[1]) sNames[1].value = s.name;
+    if (sDesigs[1]) sDesigs[1].value = s.designation;
+    if (sDates[1] && s.date) {
+      // Convert "06/11/2025" to "2025-11-06" for date input
+      const parts = s.date.split('/');
+      if (parts.length === 3) {
+        sDates[1].value = `${parts[2]}-${parts[1]}-${parts[0]}`; // YYYY-MM-DD
+      }
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// INITIALIZATION
+// ══════════════════════════════════════════════════════════════════════════════
+window.onload = () => {
+  checkServer();
+  setInterval(checkServer, 10000);
+  
+  // Add default products - REMOVED (start with empty form)
+  // addProduct("Charger", "SAMPLE", 1, 8000);
+  // addProduct("Charger", "SAMPLE", 1, 9000);
+  
+  // Add default terms section - REMOVED (start with empty form)
+  // addTermsGroup({
+  //   label: "General Terms for VIM",
+  //   product_name: "VIM",
+  //   hsn_code: "90328990",
+  //   gst_rate: "18%",
+  //   delivery: "Ex-Works, Delhi",
+  //   lead_time: "45 (forty-five) days from the date of purchase order.",
+  //   payment_terms: "100% (one hundred per cent) advance with purchase order",
+  //   offer_validity: "30 (thirty) calendar days from the date of quotation.",
+  //   warranty: "24 (twenty-four) months from the date of commissioning/delivery.",
+  //   service: "Standard after-sales service is provided.",
+  //   customizations: "All parameters can be customized and specified as per customer requirements.",
+  //   connectors_included: true,
+  //   exclusions: {}
+  // });
+};
+</script>
+</body>
+</html>
