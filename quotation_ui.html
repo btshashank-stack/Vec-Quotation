@@ -805,7 +805,10 @@ textarea {
      JAVASCRIPT
      ══════════════════════════════════════════════════════════════════════════════ -->
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-const API = "http://localhost:5000";
+const API = window.location.hostname === "localhost"
+  ? "http://localhost:5000"
+  : window.location.origin;
+
 let productCount = 0;
 let termsCount = 0;
 
