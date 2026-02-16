@@ -66,7 +66,14 @@ body {
     font-size: 0.8rem;
     opacity: 0.9;
 }
+.topbar-left {
+    display: flex;
+    flex-direction: column;
+}
 
+.topbar-right {
+    font-size: 0.8rem;
+}
 .main {
     display: grid;
     grid-template-columns: 480px 1fr;
@@ -507,7 +514,29 @@ textarea {
         min-height: 500px;
     }
 }
+@media (max-width: 768px) {
 
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 14px 18px;
+    }
+
+    .topbar h1 {
+        font-size: 1.05rem;
+    }
+
+    .topbar span,
+    .topbar-right {
+        font-size: 0.75rem;
+    }
+
+    .main {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+}
 /* ══════════════════════════════════════════════════════════════════════════════
    SCROLLBAR STYLING
    ══════════════════════════════════════════════════════════════════════════════ */
@@ -539,20 +568,20 @@ textarea {
   <!-- ══════════════════════════════════════════════════════════════════════════════
        TOP BAR
        ══════════════════════════════════════════════════════════════════════════════ -->
-  <div class="topbar" style="display:flex;justify-content:space-between;align-items:center;">
-    <!-- Left: Title -->
-    <div style="display:flex;align-items:center;">
-      <h1 style="margin:0;">Vecmocon Quotation Generator</h1>
-    </div>
-    
-    <!-- Center: Developer Credits -->
-    <span style="font-size:0.8rem;color:#c8e6c9;position:absolute;left:50%;transform:translateX(-50%);">
+  <div class="topbar">
+
+  <div class="topbar-left">
+    <h1>Vecmocon Quotation Generator</h1>
+    <div class="dev-text">
       Developed by: <strong>B T Shashank</strong> | South Squad Sales Team
-    </span>
-    
-    <!-- Right: Backend Status -->
-    <span>Backend: <span id="serverStatus" style="color:#a5d6a7">checking…</span></span>
+    </div>
   </div>
+
+  <div class="topbar-right">
+    Backend: <span id="serverStatus">checking…</span>
+  </div>
+
+</div>
 
   <div class="main">
     
