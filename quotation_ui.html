@@ -507,28 +507,7 @@ textarea {
         min-height: 500px;
     }
 }
-@media (max-width: 768px) {
 
-    /* Stack form rows vertically */
-    .form-row {
-        grid-template-columns: 1fr !important;
-    }
-
-    /* Reduce padding */
-    .section {
-        padding: 15px 16px;
-    }
-
-    /* Make headings smaller */
-    .topbar h1 {
-        font-size: 1rem;
-    }
-
-    .topbar span {
-        font-size: 0.7rem;
-    }
-
-}
 /* ══════════════════════════════════════════════════════════════════════════════
    SCROLLBAR STYLING
    ══════════════════════════════════════════════════════════════════════════════ */
@@ -552,71 +531,6 @@ textarea {
 .preview-panel::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
-   /* ============================= */
-/* MOBILE TOPBAR FIX */
-/* ============================= */
-.topbar-left {
-    display: flex;
-    flex-direction: column;
-}
-
-.dev-text {
-    font-size: 0.75rem;
-    opacity: 0.85;
-}
-
-.topbar-right {
-    font-size: 0.8rem;
-}
-
-@media (max-width: 768px) {
-
-    .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
-        padding: 14px 16px;
-    }
-
-    .topbar h1 {
-        font-size: 1.05rem;
-    }
-
-    .dev-text {
-        font-size: 0.7rem;
-    }
-
-    .topbar-right {
-        font-size: 0.75rem;
-    }
-}
-   /* ============================= */
-/* MOBILE FLOATING BUTTON FIX */
-/* ============================= */
-
-@media (max-width: 768px) {
-
-    /* Make floating buttons normal buttons */
-    div[style*="position:fixed"][style*="right:20px"] {
-        position: static !important;
-        flex-direction: row !important;
-        justify-content: center;
-        margin-top: 20px;
-        gap: 10px;
-    }
-
-    div[style*="position:fixed"][style*="left:24px"] {
-        position: static !important;
-        margin-top: 10px;
-    }
-
-    .btn-gen,
-    .btn-sample {
-        width: 100%;
-        justify-content: center;
-    }
-
-}
 </style>
 </head>
 <body>
@@ -625,18 +539,22 @@ textarea {
   <!-- ══════════════════════════════════════════════════════════════════════════════
        TOP BAR
        ══════════════════════════════════════════════════════════════════════════════ -->
- <div class="topbar">
-  <div class="topbar-left">
-    <h1>Vecmocon Quotation Generator</h1>
-    <div class="dev-text">
-      Developed by: <strong>B T Shashank</strong> | South Squad Sales Team
+  <div class="topbar" style="display:flex;justify-content:space-between;align-items:center;">
+    <!-- Left: Title -->
+    <div style="display:flex;align-items:center;">
+      <h1 style="margin:0;">Vecmocon Quotation Generator</h1>
     </div>
+    
+    <!-- Center: Developer Credits -->
+    <span style="font-size:0.8rem;color:#c8e6c9;position:absolute;left:50%;transform:translateX(-50%);">
+      Developed by: <strong>B T Shashank</strong> | South Squad Sales Team
+    </span>
+    
+    <!-- Right: Backend Status -->
+    <span>Backend: <span id="serverStatus" style="color:#a5d6a7">checking…</span></span>
   </div>
 
-  <div class="topbar-right">
-    Backend: <span id="serverStatus">checking…</span>
-  </div>
-</div>
+  <div class="main">
     
     <!-- ══════════════════════════════════════════════════════════════════════════════
          FORM PANEL
@@ -945,7 +863,7 @@ function addDatasheet(product = "", url = "") {
   const row = document.createElement("div");
   row.className = "datasheet-row";
   row.id = `datasheet-${datasheetCounter}`;
-  row.style.cssText = "display:grid;grid-template-columns:1fr 1fr 40px;gap:8px;align-items:center;padding:12px;background:#f9f9f9;border-radius:6px;";
+  row.style.cssText = "display:grid;grid-template-columns:200px 1fr 40px;gap:8px;align-items:center;padding:12px;background:#f9f9f9;border-radius:6px;";
   
   row.innerHTML = `
     <select class="datasheet-product" style="padding:8px;border:1px solid #ddd;border-radius:4px;">
