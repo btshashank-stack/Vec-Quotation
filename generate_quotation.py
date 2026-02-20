@@ -48,7 +48,7 @@ ECOSYSTEM_PATH   = os.path.join(_HERE, "vecmocon_ecosystem.jpg")
 def make_styles():
     return {
         "title": ParagraphStyle("title",
-            fontName="Helvetica-Bold", fontSize=26, textColor=HexColor("#1B5E20"),
+            fontName="Helvetica-Bold", fontSize=26, textColor=HexColor("#92d050"),
             spaceAfter=4*mm, leading=30),
         "body": ParagraphStyle("body",
             fontName="Helvetica", fontSize=9, textColor=TEXT_DARK,
@@ -156,7 +156,7 @@ class VecmoconPage:
         c.setFillColor(TEXT_GRAY)
         page_num = getattr(c, "_pageNumber", 1)
         total = getattr(c, "total_pages", 0) or "?"
-        c.drawCentredString(w / 2, MARGIN_B + 1*mm, f"Page {page_num} of {total}")
+        c.drawCentredString(w / 2, MARGIN_B + 1*mm, f"Page {page_num}")
 
         c.restoreState()
 
