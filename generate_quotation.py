@@ -740,7 +740,7 @@ SAMPLE_DATA = {
     ],
     "signatories": [
         {"name": "Saurabh Jathar",  "designation": "Technical Sales Engineer", "date": "06/11/2025"},
-        {"name": "Sriharsha. R",    "designation": "Senior General Manager",          "date": "06/11/2025"},
+        {"name": "Sriharsha. R",    "designation": "Senior General Manager"},
     ],
 }
 
